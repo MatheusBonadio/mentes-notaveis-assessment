@@ -1,0 +1,429 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stove {
+    min-width: 200px;
+    height: 250px;
+    color: #222;
+    font: 12px 'Calibri';
+    text-align: center;
+    position: relative;
+    cursor: default;
+    user-select: none;
+    margin: 0 30px;
+}
+
+.lampBtn {
+    width: 10px;
+    height: 15px;
+    background-color: #e43434;
+    position: absolute;
+    left: -13px;
+    top: 22px;
+    border: 3px solid #222;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+}
+
+.lighterBox {
+    /* width: 100%; */
+    height: 60px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.lighterBtn {
+    width: 25px;
+    height: 25px;
+    border: 3px solid #222;
+    margin: 0 10px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    /* rotate: -90deg; */
+    cursor: pointer;
+    transition: rotate .5s;
+}
+
+/* .lighterBtn:last-child {
+    border: 4px solid #222;
+} */
+
+.lighterBtn::after {
+    content: '';
+    position: relative;
+    display: block;
+    width: 7px;
+    height: 20px;
+    bottom: 6px;
+    border-radius: 5px;
+    background-color: #222;
+    box-sizing: border-box;
+}
+
+.lighterBtn:last-child::after {
+    border: 2px solid #222;
+    background-color: #fff;
+}
+
+.lighterBtn.on {
+    rotate: -90deg;
+}
+
+.burnerBox {
+    /* width: 100%; */
+    height: 8px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.burner {
+    min-width: 60px;
+    height: 100%;
+    margin: 0 10px 0 10px;
+    border: 3px solid #222;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    background-color: #9e9e9e;
+    position: relative;
+}
+
+.burner.on::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 3px);
+    width: 100%;
+    /* height: 6px; */
+    border-radius: 0 0 8px 8px;
+    background-color: #4b6cff;
+    animation: burnerFire .5s infinite alternate .3s;
+}
+
+@keyframes burnerFire {
+    from {
+        height: 6px;
+    }
+
+    to {
+        height: 4px;
+    }
+}
+
+.stoveBody {
+    border: 3px solid #222;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    /* background-color: #e4e4e4; */
+    position: relative;
+}
+
+.stoveFooter {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.foot {
+    width: 25px;
+    height: 100%;
+    margin: 0 10px;
+    border: 3px solid #222;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    background-color: #9e9e9e;
+}
+
+.oven {
+    width: 100%;
+    height: calc(100% - 60px);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+.ovenDoor {
+    width: 100%;
+    height: 85%;
+    display: flex;
+    justify-content: center;
+    border: 3px solid #222;
+    border-radius: 8px;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.25);
+    /* padding: 0 ; */
+    margin: 0 15px;
+}
+
+.ovenDoor::after {
+    content: '';
+    width: 100%;
+    height: 3px;
+    background-color: #222;
+    top: 15px;
+    position: absolute;
+}
+
+.glass {
+    width: 100%;
+    min-width: 120px;
+    height: 65%;
+    /* background-color: blue; */
+    border: 3px solid #222;
+    border-radius: 8px;
+    top: 33px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(84, 173, 255, 0.8);
+    margin: 0 15px;
+    transition: background-color .5s;
+    overflow: hidden;
+}
+
+.glass.on {
+    background-color: rgba(255, 160, 18, 0.8);
+}
+
+.oven .fire {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    opacity: 0;
+    position: absolute;
+    bottom: -40px;
+    z-index: 0;
+    background-color: rgba(202, 30, 24, 0.3);
+    animation: ovenFire .5s infinite;
+    transition: opacity .5s;
+}
+
+.oven.on .fire {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    opacity: 1;
+    position: absolute;
+    bottom: -40px;
+    z-index: 0;
+    background-color: rgba(202, 30, 24, 0.3);
+    animation: ovenFire .5s infinite;
+}
+
+@keyframes ovenFire {
+    from {
+        width: 60px;
+        height: 60px;
+    }
+
+    to {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+.glass::after {
+    content: '';
+    margin-left: 10px;
+    width: 60px;
+    height: 7px;
+    rotate: 45deg;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    z-index: 1;
+}
+
+.glass::before {
+    content: '';
+    margin-right: 30px;
+    width: 30px;
+    height: 7px;
+    rotate: 45deg;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    z-index: 1;
+}
+
+#ovenWidth {
+    width: 100%;
+    height: 1px;
+    background-color: #222;
+    position: absolute;
+    bottom: -10px;
+    display: flex;
+    justify-content: center;
+}
+
+#ovenWidth::after {
+    content: '';
+    width: 1px;
+    height: 8px;
+    background-color: #222;
+    position: absolute;
+    right: 0;
+    top: -3px;
+}
+
+#ovenWidth::before {
+    content: '';
+    width: 1px;
+    height: 8px;
+    background-color: #222;
+    position: absolute;
+    left: 0;
+    top: -3px;
+}
+
+#ovenHeight {
+    width: 1px;
+    height: 100%;
+    background-color: #222;
+    position: absolute;
+    right: -12px;
+    display: flex;
+    justify-content: center;
+    writing-mode: tb-rl;
+    transform: rotate(-180deg);
+}
+
+#ovenHeight::after {
+    content: '';
+    width: 8px;
+    height: 1px;
+    background-color: #222;
+    position: absolute;
+    top: 0;
+    left: -3px;
+}
+
+#ovenHeight::before {
+    content: '';
+    width: 8px;
+    height: 1px;
+    background-color: #222;
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+}
+
+#brand {
+    position: absolute;
+    bottom: 3px;
+    font: bold 13px 'Calibri';
+}
+
+#stoveWidth {
+    width: 100%;
+    height: 1px;
+    background-color: #222;
+    position: absolute;
+    bottom: -45px;
+    display: flex;
+    justify-content: center;
+}
+
+#stoveWidth::after {
+    content: '';
+    width: 1px;
+    height: 8px;
+    background-color: #222;
+    position: absolute;
+    right: 0;
+    top: -3px;
+}
+
+#stoveWidth::before {
+    content: '';
+    width: 1px;
+    height: 8px;
+    background-color: #222;
+    position: absolute;
+    left: 0;
+    top: -3px;
+}
+
+#stoveHeight {
+    width: 1px;
+    height: calc(100% + 15px);
+    background-color: #222;
+    position: absolute;
+    top: 15px;
+    right: -15px;
+    display: flex;
+    justify-content: center;
+    writing-mode: tb-rl;
+    transform: rotate(-180deg);
+}
+
+#stoveHeight::after {
+    content: '';
+    width: 8px;
+    height: 1px;
+    background-color: #222;
+    position: absolute;
+    top: 0;
+    left: -3px;
+}
+
+#stoveHeight::before {
+    content: '';
+    width: 8px;
+    height: 1px;
+    background-color: #222;
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+}
+
+#stoveLength {
+    width: 1px;
+    height: 50px;
+    background-color: #222;
+    position: absolute;
+    bottom: -45px;
+    right: -55px;
+    display: flex;
+    justify-content: center;
+    writing-mode: tb-rl;
+    transform: skew(-45deg) rotate(180deg);
+}
+
+#stoveLength::after {
+    content: '';
+    width: 8px;
+    height: 1px;
+    background-color: #222;
+    position: absolute;
+    top: 0;
+    left: -3px;
+}
+
+#stoveLength::before {
+    content: '';
+    width: 8px;
+    height: 1px;
+    background-color: #222;
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang='pt-br'>
+
+<head>
+    <meta charset='UTF-8' />
+    <title>Avaliação de Programação Front-end</title>
+    <link rel='stylesheet' href='public/css/style.css' type='text/css' />
+    <script src='src/app/Stove.js'></script>
+    <script src='src/app/Oven.js'></script>
+    <script src='src/app/Lighter.js'></script>
+</head>
+
+<body>
+
+    <div class='stove'>
+        <div class='burnerBox'></div>
+        <div class='stoveBody'>
+            <div class='lampBtn' onclick='stove.lampToggle()'></div>
+            <div class='lighterBox'></div>
+            <div class='oven'>
+                <div class='ovenDoor'>
+                    <div class='glass'>
+                        <div class='fire'></div>
+                    </div>
+                    <div id='brand'></div>
+                    <div id='ovenWidth'></div>
+                    <div id='ovenHeight'></div>
+                </div>
+            </div>
+        </div>
+        <div class='stoveFooter'>
+            <div class='foot'></div>
+            <div class='foot'></div>
+        </div>
+        <div id='stoveWidth'></div>
+        <div id='stoveHeight'></div>
+        <div id='stoveLength'></div>
+    </div>
+
+    <script>
+
+        let stove = new Stove(
+            color = '#e4e4e4',
+            width = '1,3 m',
+            height = '1 m',
+            lenght = '1,2 m',
+            brand = 'MINDS',
+            burners = 4,
+            lighters = [
+                new Lighter('#c3e6d4'),
+                new Lighter('#f4f0e5'),
+                new Lighter('#e0c4ae'),
+                new Lighter('#e1918e'),
+                new Lighter('#e15e6e'),
+            ],
+            oven = [
+                new Oven('60 cm', '50 cm'),
+            ]
+        );
+
+    </script>
+
+</body>
+
+</html>
