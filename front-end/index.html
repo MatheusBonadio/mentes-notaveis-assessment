@@ -32,16 +32,25 @@
     <img src='public/img/logo.png' alt='MINDS' class='logo' />
 
     <div class='buttonBox'>
-        <div class='addBurner' onclick='stove.addBurner()'>ADD BURNER</div>
-        <div class='addOven' onclick='stove.addOven()'>ADD OVEN</div>
+        <div class='button'>
+            <div class='action' onclick='stove.addBurner()'>+</div>
+            <div id='stoveBurners' class='text'>BURNERS (0)</div>
+            <div class='action' onclick='stove.removeBurner()'>–</div>
+        </div>
 
-        <div class='addBurner' onclick='stove.removeBurner()'>REMOVE BURNER</div>
-        <div class='addOven' onclick='stove.removeOven()'>REMOVE OVEN</div>
+        <div class='button'>
+            <div class='action' onclick='stove.addOven()'>+</div>
+            <div id='stoveOvens' class='text'>OVENS (0)</div>
+            <div class='action' onclick='stove.removeOven()'>–</div>
+        </div>
     </div>
 
     <div class='messageBox'></div>
 
     <script>
+
+        var maxBurners = 10;
+        var maxOvens = 5;
 
         var stove = new Stove(
             color = '#e4e4e4',
@@ -62,11 +71,16 @@
             ]
         );
 
-        function alertError(message) {
+        function alertMessage(message, type) {
             let messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
+            messageDiv.classList.add('message', type);
             messageDiv.innerHTML = message;
+
             document.querySelector('.messageBox').appendChild(messageDiv);
+
+            setTimeout(function () {
+                messageDiv.remove();
+            }, 6000);
         }
 
     </script>

@@ -1,6 +1,3 @@
-var maxBurners = 10;
-var maxOvens = 5;
-
 class Stove {
 
     /**
@@ -42,6 +39,7 @@ class Stove {
         this.renderBurners();
         this.renderOvens();
         this.renderStove();
+        this.refreshNumbers();
 
         this.stoveInfo()
     }
@@ -51,10 +49,24 @@ class Stove {
      * Throws an error and displays an alert if the number of lighters is not correct.
      */
     verifyStove() {
-        var message = 'The number of lighters is less or more than enough';
-
         if (this._lighters.length != this._ovens.length + this._burners) {
-            alertError(message);
+            var message = '❌ The number of lighters is less or more than enough';
+
+            alertMessage(message, 'error');
+            throw { 'Error': message };
+        }
+
+        if (typeof maxOvens === 'undefined') {
+            var message = '❌ The maximum value of stoves is required';
+
+            alertMessage(message, 'error');
+            throw { 'Error': message };
+        }
+
+        if (typeof maxBurners === 'undefined') {
+            var message = '❌ The maximum value of burners is required';
+
+            alertMessage(message, 'error');
             throw { 'Error': message };
         }
     }
@@ -68,11 +80,11 @@ class Stove {
 
     /**
      * Creates a new burner element and appends it to the burnerBox container.
-     * @param {int} key - The unique identifier for the burner.
+     * @param {string} uuid_lighter - The unique identifier for the burner.
      */
-    createBurner(key) {
+    createBurner(uuid_lighter) {
         let burnerDiv = document.createElement('div');
-        burnerDiv.id = `burner_${key}`;
+        burnerDiv.id = `burner_${uuid_lighter}`;
         burnerDiv.classList.add('burner')
         document.querySelector('.burnerBox').appendChild(burnerDiv);
     }
@@ -88,12 +100,19 @@ class Stove {
         document.querySelector('.brand').innerHTML = this._brand;
     }
 
+    refreshNumbers() {
+        document.querySelector('#stoveBurners').innerHTML = `BURNERS (${this._burners})`;
+        document.querySelector('#stoveOvens').innerHTML = `OVENS (${this._ovens.length})`;
+    }
+
     /**
      * Renders the burners by creating burner elements.
      */
     renderBurners() {
-        for (var i = 0; i < this._burners; i++)
-            this.createBurner(i);
+        this._lighters.forEach((lighter, key) => {
+            if (key < this._burners)
+                this.createBurner(lighter._id);
+        });
     }
 
     /**
@@ -131,14 +150,15 @@ class Stove {
             var lighter = new Lighter('#fff');
 
             lighter.createLighterBurner();
-            this.createBurner(this._lighters.length);
+            this.createBurner(lighter._id);
 
             this._lighters.push(lighter);
             this._burners++;
 
+            this.refreshNumbers()
             this.stoveInfo()
         } else
-            alertError(`Limit of burners reached (${maxBurners})`);
+            alertMessage(`⚠️ Limit of burners reached (${maxBurners})`, 'warning');
     }
 
     /**
@@ -156,9 +176,10 @@ class Stove {
             this._lighters = this._lighters.filter(lighter => lighter._id !== uuid_lighter);
             this._burners--;
 
+            this.refreshNumbers()
             this.stoveInfo()
         } else
-            alertError('At least 1 burner is required');
+            alertMessage('⚠️ At least 1 burner is required', 'warning');
     }
 
     /**
@@ -177,9 +198,10 @@ class Stove {
             this._ovens.push(oven);
             this._lighters.push(lighter);
 
+            this.refreshNumbers()
             this.stoveInfo()
         } else
-            alertError(`Limit of ovens reached (${maxOvens})`);
+            alertMessage(`⚠️ Limit of ovens reached (${maxOvens})`, 'warning');
     }
 
     /**
@@ -201,9 +223,10 @@ class Stove {
             this._lighters = this._lighters.filter(lighter => lighter._id !== uuid_lighter);
             this._ovens.pop();
 
+            this.refreshNumbers()
             this.stoveInfo()
         } else
-            alertError('At least 1 oven is required');
+            alertMessage('⚠️ At least 1 oven is required', 'warning');
     }
 
     /**
@@ -224,9 +247,8 @@ class Stove {
      */
     burnerSwitch(element, uuid) {
         var lighter = this._lighters.find(lighter => lighter._id === uuid);
-        var index = this._lighters.indexOf(lighter);
 
-        lighter.burnerSwitch(element, index);
+        lighter.burnerSwitch(element);
         this.stoveInfo()
     }
 

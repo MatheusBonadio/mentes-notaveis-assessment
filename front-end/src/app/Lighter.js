@@ -56,17 +56,16 @@ class Lighter {
     /**
      * Toggles the state of a burner element.
      * @param {HTMLElement} element - The burner element to toggle.
-     * @param {int} index - The index of the burner element.
      */
-    burnerSwitch(element, index) {
+    burnerSwitch(element) {
         if (!this._lited) {
             element.classList.add('on');
-            document.querySelector(`#burner_${index}`).classList.add('on');
+            document.querySelector(`#burner_${this._id}`).classList.add('on');
 
             this.litedToggle();
         } else {
             element.classList.remove('on');
-            document.querySelector(`#burner_${index}`).classList.remove('on');
+            document.querySelector(`#burner_${this._id}`).classList.remove('on');
 
             this.litedToggle();
         }

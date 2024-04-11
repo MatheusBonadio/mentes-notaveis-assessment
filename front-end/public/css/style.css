@@ -43,7 +43,6 @@ body {
 }
 
 .lighterBox {
-    /* width: 100%; */
     height: 60px;
     display: flex;
     justify-content: space-evenly;
@@ -59,14 +58,9 @@ body {
     position: relative;
     display: flex;
     justify-content: center;
-    /* rotate: -90deg; */
     cursor: pointer;
     transition: rotate .5s;
 }
-
-/* .lighterBtn:last-child {
-    border: 4px solid #222;
-} */
 
 .lighterBtn::after {
     content: '';
@@ -90,7 +84,6 @@ body {
 }
 
 .burnerBox {
-    /* width: 100%; */
     height: 8px;
     display: flex;
     justify-content: space-around;
@@ -113,7 +106,6 @@ body {
     left: 0;
     bottom: calc(100% + 3px);
     width: 100%;
-    /* height: 6px; */
     border-radius: 0 0 8px 8px;
     background-color: #4b6cff;
     animation: burnerFire .5s infinite alternate .3s;
@@ -134,7 +126,6 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 8px;
-    /* background-color: #e4e4e4; */
     position: relative;
 }
 
@@ -223,7 +214,6 @@ body {
     width: 100%;
     min-width: 120px;
     height: 65%;
-    /* background-color: blue; */
     border: 3px solid #222;
     border-radius: 8px;
     top: 33px;
@@ -473,20 +463,47 @@ body {
     margin-top: 460px;
 }
 
-.addBurner, .addOven {
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
     font: bold 15px 'Calibri';
-    padding: 12px 24px;
-    background-color: #7e7e7e;
-    color: #fff;
-    margin: 0 20px;
-    cursor: pointer;
-    transition: background-color .5s;
-    border-radius: 8px;
     user-select: none;
+    border-radius: 8px;
+    border: 1px solid black;
+    overflow: hidden;
 }
 
-.addBurner:hover, .addOven:hover {
-    background-color: #646464;
+.button  .action {
+    padding: 7px 13px;
+    background-color: #0d85e4;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color .5s;
+    user-select: none;
+    font-size: 18pt;
+}
+
+.button .action:hover {
+    background-color: #0f65ac;
+}
+
+.button .action:last-child {
+    background-color: #b91010;
+}
+
+.button .action:hover:last-child {
+    background-color: #991111;
+}
+
+.button .text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+    width: 110px;
+    height: 100%;
 }
 
 img {
@@ -510,12 +527,20 @@ img {
     font: 15px 'Calibri';
     width: 100%;
     padding: 20px;
-    background-color: #b43b45;
-    color: #fff;
     border-radius: 8px;
     z-index: 99;
     cursor: default;
     animation: 1s messagePopUp 5s forwards;
+}
+
+.message.error {
+    background-color: #f5c6cb;
+    color: #721c24;
+}
+
+.message.warning {
+    background-color: #ffeeba;
+    color: #856404;
 }
 
 @keyframes messagePopUp {
