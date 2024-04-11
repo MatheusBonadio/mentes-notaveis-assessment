@@ -16,18 +16,9 @@
     <div class='stove'>
         <div class='burnerBox'></div>
         <div class='stoveBody'>
-            <div class='lampBtn' onclick='stove.lampToggle()'></div>
+            <div class='lampBox'></div>
             <div class='lighterBox'></div>
-            <div class='oven'>
-                <div class='ovenDoor'>
-                    <div class='glass'>
-                        <div class='fire'></div>
-                    </div>
-                    <div id='brand'></div>
-                    <div id='ovenWidth'></div>
-                    <div id='ovenHeight'></div>
-                </div>
-            </div>
+            <div class='ovenBox'></div>
         </div>
         <div class='stoveFooter'>
             <div class='foot'></div>
@@ -38,13 +29,25 @@
         <div id='stoveLength'></div>
     </div>
 
+    <img src='public/img/logo.png' alt='MINDS' class='logo' />
+
+    <div class='buttonBox'>
+        <div class='addBurner' onclick='stove.addBurner()'>ADD BURNER</div>
+        <div class='addOven' onclick='stove.addOven()'>ADD OVEN</div>
+
+        <div class='addBurner' onclick='stove.removeBurner()'>REMOVE BURNER</div>
+        <div class='addOven' onclick='stove.removeOven()'>REMOVE OVEN</div>
+    </div>
+
+    <div class='messageBox'></div>
+
     <script>
 
-        let stove = new Stove(
+        var stove = new Stove(
             color = '#e4e4e4',
             width = '1,3 m',
             height = '1 m',
-            lenght = '1,2 m',
+            length = '1,2 m',
             brand = 'MINDS',
             burners = 4,
             lighters = [
@@ -52,12 +55,19 @@
                 new Lighter('#f4f0e5'),
                 new Lighter('#e0c4ae'),
                 new Lighter('#e1918e'),
-                new Lighter('#e15e6e'),
+                new Lighter('#e15e6e')
             ],
-            oven = [
-                new Oven('60 cm', '50 cm'),
+            ovens = [
+                new Oven('60 cm', '50 cm')
             ]
         );
+
+        function alertError(message) {
+            let messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.innerHTML = message;
+            document.querySelector('.messageBox').appendChild(messageDiv);
+        }
 
     </script>
 
