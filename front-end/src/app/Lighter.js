@@ -24,18 +24,18 @@ class Lighter {
 
     /**
      * Creates a lighter burner element and appends it to the DOM.
+     * @param {string} uuid_burner - The UUID of the burner.
      */
-    createLighterBurner() {
+    createLighterBurner(uuid_burner) {
         let lighterDiv = document.createElement('div');
         lighterDiv.id = `lighter_${this._id}`;
         lighterDiv.classList.add('lighterBtn');
         lighterDiv.setAttribute('style', `background-color: ${this._color}`);
 
-        lighterDiv.setAttribute('onclick', `stove.burnerSwitch(this, "${this._id}")`);
+        lighterDiv.setAttribute('onclick', `stove.burnerSwitch(this, "${this._id}", "${uuid_burner}")`);
 
         document.querySelector('.lighterBox').appendChild(lighterDiv);
     }
-
 
     /**
      * Creates a lighter for the oven.
@@ -54,18 +54,20 @@ class Lighter {
     }
 
     /**
-     * Toggles the state of a burner element.
-     * @param {HTMLElement} element - The burner element to toggle.
+     * Toggles the state of a burner switch.
+     * 
+     * @param {HTMLElement} element - The element representing the burner switch.
+     * @param {string} uuid_burner - The UUID of the burner.
      */
-    burnerSwitch(element) {
+    burnerSwitch(element, uuid_burner) {
         if (!this._lited) {
             element.classList.add('on');
-            document.querySelector(`#burner_${this._id}`).classList.add('on');
+            document.querySelector(`#burner_${uuid_burner}`).classList.add('on');
 
             this.litedToggle();
         } else {
             element.classList.remove('on');
-            document.querySelector(`#burner_${this._id}`).classList.remove('on');
+            document.querySelector(`#burner_${uuid_burner}`).classList.remove('on');
 
             this.litedToggle();
         }

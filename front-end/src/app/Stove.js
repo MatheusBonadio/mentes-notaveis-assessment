@@ -49,7 +49,7 @@ class Stove {
      * Throws an error and displays an alert if the number of lighters is not correct.
      */
     verifyStove() {
-        if (this._lighters.length != this._ovens.length + this._burners) {
+        if (this._lighters.length != this._ovens.length + this._burners.length) {
             var message = '❌ The number of lighters is less or more than enough';
 
             alertMessage(message, 'error');
@@ -79,17 +79,6 @@ class Stove {
     }
 
     /**
-     * Creates a new burner element and appends it to the burnerBox container.
-     * @param {string} uuid_lighter - The unique identifier for the burner.
-     */
-    createBurner(uuid_lighter) {
-        let burnerDiv = document.createElement('div');
-        burnerDiv.id = `burner_${uuid_lighter}`;
-        burnerDiv.classList.add('burner')
-        document.querySelector('.burnerBox').appendChild(burnerDiv);
-    }
-
-    /**
      * Renders the stove by setting the background color and dimensions.
      */
     renderStove() {
@@ -101,7 +90,7 @@ class Stove {
     }
 
     refreshNumbers() {
-        document.querySelector('#stoveBurners').innerHTML = `BURNERS (${this._burners})`;
+        document.querySelector('#stoveBurners').innerHTML = `BURNERS (${this._burners.length})`;
         document.querySelector('#stoveOvens').innerHTML = `OVENS (${this._ovens.length})`;
     }
 
@@ -109,9 +98,8 @@ class Stove {
      * Renders the burners by creating burner elements.
      */
     renderBurners() {
-        this._lighters.forEach((lighter, key) => {
-            if (key < this._burners)
-                this.createBurner(lighter._id);
+        this._burners.forEach((burner) => {
+            burner.createBurner();
         });
     }
 
@@ -122,8 +110,8 @@ class Stove {
         var index = 0;
 
         this._lighters.forEach((lighter, key) => {
-            if (key < this._burners)
-                lighter.createLighterBurner();
+            if (key < this._burners.length)
+                lighter.createLighterBurner(this._burners[key]._id);
             else {
                 lighter.createLighterOven(this._ovens[index]._id);
                 index++;
@@ -146,14 +134,15 @@ class Stove {
      * Displays an error message if the maximum number of burners is reached.
      */
     addBurner() {
-        if (this._burners < maxBurners) {
+        if (this._burners.length < maxBurners) {
             var lighter = new Lighter('#fff');
+            var burner = new Burner();
 
-            lighter.createLighterBurner();
-            this.createBurner(lighter._id);
+            burner.createBurner();
+            this._burners.push(burner);
 
+            lighter.createLighterBurner(burner._id);
             this._lighters.push(lighter);
-            this._burners++;
 
             this.refreshNumbers()
             this.stoveInfo()
@@ -165,16 +154,16 @@ class Stove {
      * Removes a burner from the stove.
      */
     removeBurner() {
-        if (this._burners > 1) {
+        if (this._burners.length > 1) {
             var burners = document.querySelectorAll('.burner');
             document.querySelectorAll('.burner')[burners.length - 1].remove();
 
             var lighter = document.querySelectorAll('[onclick^="stove.burnerSwitch"]');
-            var uuid_lighter = lighter[this._burners - 1].id.split('_')[1];
+            var uuid_lighter = lighter[this._burners.length - 1].id.split('_')[1];
             document.getElementById(`lighter_${uuid_lighter}`).remove();
 
             this._lighters = this._lighters.filter(lighter => lighter._id !== uuid_lighter);
-            this._burners--;
+            this._burners.pop();
 
             this.refreshNumbers()
             this.stoveInfo()
@@ -245,10 +234,12 @@ class Stove {
      * @param {HTMLElement} element - The HTML element representing the lighter.
      * @param {string} uuid - The unique identifier for the lighter.
      */
-    burnerSwitch(element, uuid) {
-        var lighter = this._lighters.find(lighter => lighter._id === uuid);
+    burnerSwitch(element, uuid_lighter, uuid_burner) {
+        var burner = this._burners.find(burner => burner._id === uuid_burner);
+        var lighter = this._lighters.find(lighter => lighter._id === uuid_lighter);
 
-        lighter.burnerSwitch(element);
+        lighter.burnerSwitch(element, uuid_burner);
+        burner.litedToggle();
         this.stoveInfo()
     }
 

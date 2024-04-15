@@ -9,6 +9,7 @@
     <script src='src/app/Stove.js'></script>
     <script src='src/app/Oven.js'></script>
     <script src='src/app/Lighter.js'></script>
+    <script src='src/app/Burner.js'></script>
 </head>
 
 <body>
@@ -58,7 +59,12 @@
             height = '1 m',
             length = '1,2 m',
             brand = 'MINDS',
-            burners = 4,
+            burners = [
+                new Burner(),
+                new Burner(),
+                new Burner(),
+                new Burner()
+            ],
             lighters = [
                 new Lighter('#c3e6d4'),
                 new Lighter('#f4f0e5'),
