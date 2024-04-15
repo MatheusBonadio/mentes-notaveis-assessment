@@ -116,11 +116,13 @@ class Oven {
         if (!this._lamp) {
             document.querySelector(`#oven_${this._id} .glass`).classList.add('on');
             document.querySelector(`#oven_${this._id} .ovenBack`).classList.add('on');
+            document.querySelector(`#lamp_${this._id}`).classList.add('on');
 
             this.lampToggle();
         } else {
             document.querySelector(`#oven_${this._id} .glass`).classList.remove('on');
             document.querySelector(`#oven_${this._id} .ovenBack`).classList.remove('on');
+            document.querySelector(`#lamp_${this._id}`).classList.remove('on');
 
             this.lampToggle();
         }

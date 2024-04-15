@@ -34,7 +34,13 @@ class Lighter {
 
         lighterDiv.setAttribute('onclick', `stove.burnerSwitch(this, "${this._id}", "${uuid_burner}")`);
 
-        document.querySelector('.lighterBox').appendChild(lighterDiv);
+        var burners = document.querySelectorAll('[onclick^="stove.burnerSwitch"]');
+
+        if (burners.length == 0) {
+            document.querySelector('.lighterBox').appendChild(lighterDiv);
+        } else {
+            burners[burners.length - 1].after(lighterDiv)
+        }
     }
 
     /**
