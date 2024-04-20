@@ -27,9 +27,9 @@ class StoreUserRequest extends BaseRequest
     {
         $request = $this->getBody();
 
-        $request['id'] = "";
+        $request['id'] = $this->guidv4();
         $request['password'] = password_hash($request['password'], PASSWORD_DEFAULT);
-        $request['email_verified_at'] = null;
+
         $request['created_at'] = date('Y-m-d H:i:s');
         $request['updated_at'] = date('Y-m-d H:i:s');
 

@@ -58,13 +58,13 @@ class UserController extends BaseController
         try {
             $created = $this->user->create($request);
         } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), HttpStatus::BAD_REQUEST);
+            return $this->sendError($e->getMessage());
         }
 
         return $this->sendSuccess([
             'message' => 'User created successfully',
             'status' => HttpStatus::OK,
-            'data' => (new UserResource())->resource((object) $request)
+            'data' => (new UserResource())->resource((object) $created)
         ]);
     }
 
@@ -103,16 +103,13 @@ class UserController extends BaseController
         try {
             $updated = $this->user->update(['id' => $id], $request);
         } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), HttpStatus::BAD_REQUEST);
+            return $this->sendError($e->getMessage());
         }
-
-        $user->name = $request['name'];
-        $user->email = $request['email'];
 
         return $this->sendSuccess([
             'message' => 'User updated successfully',
             'status' => HttpStatus::OK,
-            'data' => (new UserResource())->resource($user)
+            'data' => (new UserResource())->resource($updated)
         ]);
     }
 
@@ -132,7 +129,7 @@ class UserController extends BaseController
         try {
             $deleted = $this->user->delete(['id' => $id]);
         } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), HttpStatus::BAD_REQUEST);
+            return $this->sendError($e->getMessage());
         }
 
         return $this->sendSuccess([
