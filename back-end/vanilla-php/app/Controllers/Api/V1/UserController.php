@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Constants\HttpStatus;
+use App\Models\Address;
+use App\Models\City;
+use App\Models\State;
 use App\Models\User;
 use App\Requests\StoreUserRequest;
 use App\Requests\UpdateUserRequest;
@@ -17,6 +20,9 @@ use App\Resources\UserResource;
 class UserController extends BaseController
 {
     private User $user;
+    private Address $address;
+    private City $city;
+    private State $state;
 
     protected StoreUserRequest $storeUserRequest;
     protected UpdateUserRequest $updateUserRequest;
@@ -29,6 +35,10 @@ class UserController extends BaseController
     public function __construct()
     {
         $this->user = new User();
+        $this->address = new Address();
+        $this->city = new City();
+        $this->state = new State();
+
         $this->storeUserRequest = new StoreUserRequest();
         $this->updateUserRequest = new UpdateUserRequest();
     }
@@ -80,6 +90,15 @@ class UserController extends BaseController
 
         if (!$user)
             return $this->sendError('Record not found', HttpStatus::NOT_FOUND);
+
+        $addresses = $this->address->findAll(['user_id' => $id]);
+
+        foreach ($addresses as $address) {
+            $address->city = $this->city->find(['id' => $address->city_id]);
+            $address->city->state = $this->state->find(['id' => $address->city->state_id]);
+        }
+
+        $user->addresses = $addresses;
 
         return $this->sendSuccess((new UserResource())->resource($user));
     }

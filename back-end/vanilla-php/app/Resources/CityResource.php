@@ -12,10 +12,15 @@ class CityResource extends BaseResource
      */
     protected function formatResource($resource): array
     {
-        return [
+        $city = [
             'id' => $resource->id,
             'name' => $resource->name,
             'state_id' => $resource->state_id
         ];
+
+        if (isset($resource->state))
+            $city['state'] = (new StateResource())->resource($resource->state);
+
+        return $city;
     }
 }

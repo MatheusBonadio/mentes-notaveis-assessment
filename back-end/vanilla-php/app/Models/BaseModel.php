@@ -57,6 +57,11 @@ abstract class BaseModel
         return $this->builder->find($this->table, $columns, $conditions);
     }
 
+    public function findAll(array $conditions = [], array $columns = ['*'])
+    {
+        return $this->builder->findAll($this->table, $columns, $conditions);
+    }
+
     /**
      * Update One record from a database table.
      */

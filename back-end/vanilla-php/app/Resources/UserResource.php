@@ -12,11 +12,16 @@ class UserResource extends BaseResource
      */
     protected function formatResource($resource): array
     {
-        return [
+        $user = [
             'id' => $resource->id,
             'name' => $resource->name,
             'email' => $resource->email,
             'email_verified_at' => $resource->email_verified_at
         ];
+
+        if (isset($resource->addresses))
+            $user['addresses'] = (new AddressResource())->collection($resource->addresses);
+
+        return $user;
     }
 }
