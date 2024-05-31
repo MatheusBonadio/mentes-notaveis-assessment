@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Constants\HttpStatus;
 use App\Models\Address;
+use App\Models\City;
+use App\Models\State;
+use App\Models\User;
 use App\Resources\AddressResource;
 
 /**
@@ -14,6 +17,9 @@ use App\Resources\AddressResource;
 class AddressController extends BaseController
 {
     private Address $address;
+    private City $city;
+    private State $state;
+    private User $user;
 
     /**
      * AddressController constructor.
@@ -23,6 +29,9 @@ class AddressController extends BaseController
     public function __construct()
     {
         $this->address = new Address();
+        $this->city = new City();
+        $this->state = new State();
+        $this->user = new User();
     }
 
     /**
@@ -49,6 +58,10 @@ class AddressController extends BaseController
 
         if (!$address)
             return $this->sendError('Record not found', HttpStatus::NOT_FOUND);
+
+        $address->user = $this->user->find(['id' => $address->user_id]);
+        $address->city = $this->city->find(['id' => $address->city_id]);
+        $address->city->state = $this->state->find(['id' => $address->city->state_id]);
 
         return $this->sendSuccess((new AddressResource())->resource($address));
     }

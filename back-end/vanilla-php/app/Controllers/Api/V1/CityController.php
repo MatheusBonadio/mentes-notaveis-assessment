@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Constants\HttpStatus;
 use App\Models\City;
+use App\Models\State;
 use App\Resources\CityResource;
 
 /**
@@ -14,6 +15,7 @@ use App\Resources\CityResource;
 class CityController extends BaseController
 {
     private City $city;
+    private State $state;
 
     /**
      * CityController constructor.
@@ -23,6 +25,7 @@ class CityController extends BaseController
     public function __construct()
     {
         $this->city = new City();
+        $this->state = new State();
     }
 
     /**
@@ -49,6 +52,8 @@ class CityController extends BaseController
 
         if (!$city)
             return $this->sendError('Record not found', HttpStatus::NOT_FOUND);
+
+        $city->state = $this->state->find(['id' => $city->state_id]);
 
         return $this->sendSuccess((new CityResource())->resource($city));
     }

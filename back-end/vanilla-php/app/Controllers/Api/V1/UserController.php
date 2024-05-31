@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Constants\HttpStatus;
+use App\Models\Address;
+use App\Models\City;
+use App\Models\State;
 use App\Models\User;
 use App\Requests\StoreUserRequest;
 use App\Requests\UpdateUserRequest;
@@ -17,6 +20,9 @@ use App\Resources\UserResource;
 class UserController extends BaseController
 {
     private User $user;
+    private Address $address;
+    private City $city;
+    private State $state;
 
     protected StoreUserRequest $storeUserRequest;
     protected UpdateUserRequest $updateUserRequest;
@@ -29,6 +35,10 @@ class UserController extends BaseController
     public function __construct()
     {
         $this->user = new User();
+        $this->address = new Address();
+        $this->city = new City();
+        $this->state = new State();
+
         $this->storeUserRequest = new StoreUserRequest();
         $this->updateUserRequest = new UpdateUserRequest();
     }
@@ -58,13 +68,13 @@ class UserController extends BaseController
         try {
             $created = $this->user->create($request);
         } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), HttpStatus::BAD_REQUEST);
+            return $this->sendError($e->getMessage());
         }
 
         return $this->sendSuccess([
             'message' => 'User created successfully',
             'status' => HttpStatus::OK,
-            'data' => (new UserResource())->resource((object) $request)
+            'data' => (new UserResource())->resource((object) $created)
         ]);
     }
 
@@ -80,6 +90,15 @@ class UserController extends BaseController
 
         if (!$user)
             return $this->sendError('Record not found', HttpStatus::NOT_FOUND);
+
+        $addresses = $this->address->findAll(['user_id' => $id]);
+
+        foreach ($addresses as $address) {
+            $address->city = $this->city->find(['id' => $address->city_id]);
+            $address->city->state = $this->state->find(['id' => $address->city->state_id]);
+        }
+
+        $user->addresses = $addresses;
 
         return $this->sendSuccess((new UserResource())->resource($user));
     }
@@ -103,16 +122,13 @@ class UserController extends BaseController
         try {
             $updated = $this->user->update(['id' => $id], $request);
         } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), HttpStatus::BAD_REQUEST);
+            return $this->sendError($e->getMessage());
         }
-
-        $user->name = $request['name'];
-        $user->email = $request['email'];
 
         return $this->sendSuccess([
             'message' => 'User updated successfully',
             'status' => HttpStatus::OK,
-            'data' => (new UserResource())->resource($user)
+            'data' => (new UserResource())->resource($updated)
         ]);
     }
 
@@ -132,7 +148,7 @@ class UserController extends BaseController
         try {
             $deleted = $this->user->delete(['id' => $id]);
         } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), HttpStatus::BAD_REQUEST);
+            return $this->sendError($e->getMessage());
         }
 
         return $this->sendSuccess([

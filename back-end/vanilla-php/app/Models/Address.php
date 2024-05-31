@@ -7,6 +7,6 @@ class Address extends BaseModel
     protected string $table = 'addresses';
 
     protected array $attributes = [
-        'name', 'street', 'updated_at', 'user_id', 'city_id'
+        'name', 'street', 'created_at', 'updated_at', 'user_id', 'city_id'
     ];
 }

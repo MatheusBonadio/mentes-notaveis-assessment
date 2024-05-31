@@ -43,6 +43,31 @@ class QueryBuilder
     }
 
     /**
+     * Retrieve all records from a table.
+     *
+     * @param string $table The name of the table.
+     * @param array $columns The columns to retrieve. Default is ['*'].
+     * @param array $conditions The conditions to apply. Default is an empty array.
+     * @param string $mode The fetch mode. Default is 'CLASS'. Can be 'CLASS' or 'COLUMN'.
+     * @return array The fetched records.
+     */
+    public function findAll(string $table, array $columns = ['*'], array $conditions = [], string $mode = 'CLASS')
+    {
+        $columns = implode(',', $columns);
+        $mode = $mode == 'CLASS' ? PDO::FETCH_CLASS : PDO::FETCH_COLUMN;
+        $query = "select {$columns} from {$table}";
+
+        if (!empty($conditions)) {
+            $query .= $this->processConditions($conditions);
+        }
+
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+
+        return $statement->fetchAll($mode);
+    }
+
+    /**
      * Find One Record.
      *
      * @param string $table
@@ -71,11 +96,10 @@ class QueryBuilder
      * @param string $table
      * @param array $conditions
      * @param array $data
-     * @return bool|false
+     * @return array|false
      */
-    public function update(string $table, array $conditions, array $data): bool
+    public function update(string $table, array $conditions, array $data)
     {
-
         $query = "UPDATE {$table}";
 
         if (!empty($data)) {
@@ -87,10 +111,18 @@ class QueryBuilder
         }
 
         $statement = $this->pdo->prepare($query);
+        $statement->execute();
 
-        return $statement->execute();
+        return $this->find($table, ['*'], ['id' => $conditions['id']]);
     }
 
+    /**
+     * Create a new record in the specified table.
+     *
+     * @param string $table The name of the table.
+     * @param array $data The data to be inserted into the table.
+     * @return array The newly created record.
+     */
     public function create(string $table, array $data)
     {
         $keys = implode(', ', array_keys($data));
@@ -100,9 +132,18 @@ class QueryBuilder
         $statement = $this->pdo->prepare($query);
         $statement->execute();
 
-        return $this->find($table, ['*'], ['id' => $this->pdo->lastInsertId()]);
+        $lastInsertId = $data['id'] != null ? $data['id'] : $this->pdo->lastInsertId();
+
+        return $this->find($table, ['*'], ['id' => $lastInsertId]);
     }
 
+    /**
+     * Deletes records from a database table based on the given conditions.
+     *
+     * @param string $table The name of the table to delete records from.
+     * @param array $conditions An associative array of conditions to filter the deletion.
+     * @return bool True if the deletion was successful, false otherwise.
+     */
     public function delete(string $table, array $conditions)
     {
         $query = "DELETE FROM {$table}";
